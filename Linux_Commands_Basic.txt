@@ -1,0 +1,84 @@
+init 6 # reboot the server
+
+pwd - present working directory
+
+cd ..    --back
+
+ls - list
+
+ls -laF or ll  -- gives you all the details of the file
+
+clear - cleares your screen
+
+cd Des--tab  ---change directories
+
+cat / more / less  - viewing file
+
+vi  - editing a file
+I - for inserting
+:q! - dont save and close
+:wq! - save and close
+:x - save and close
+
+grep "string" file_name.txt  -- search for a file in a particular folder
+
+ifconfig - finding an ip address
+
+hostname - finding the machine name
+
+echo $PATH  - looking in the environment variable - contents of the same.
+
+env - to show all environment variables
+
+rm - delete a file with warning
+
+rm -f -- force delete
+
+rm -rf -- force delete anything(a directory or a file)
+
+
+rpm -ivh name-of-the-rpm.rpm - istalling the packages
+
+
+man some_command_name - manual of the command
+
+cp srcfile.txt destfile.txt   - copy a file
+
+mv cat.java dog.java    - move/rename a file
+
+mkdir some_dir.com   - create a certain directory
+
+cd ..
+
+chmod 777 somedir.con
+
+7 - user
+7 - group
+7 - world / others
+
+4 - rd
+2 - wr
+1 - exec
+
+7 - total
+
+chmod 444 somedir.com --all read permissions
+
+chown manoj:root somedir
+
+df -h ==> to check all filesystem Size
+
+du -hs . => to check the size of the directory
+
+du -hs * ==> to chec size of each file
+ 
+
+
+find /opt/cloudera/parcels/CDH/ -type f -name '*examples*.jar'
+
+
+rpm -ql repo_name.rep #wil list you what packages came from which repo
+
+rpm -qa | grep BigData #will tell you what packages were installed from that repo
+
+ps -elf | grep cloudera   | process information

@@ -1,0 +1,130 @@
+
+Internal and external tables
+
+Movie DataSet Example:
+
+Creating Movie Table:
+
+create table movie (mid int, moviename string, year int) row format delimited fields terminated by '\t';
+
+Loading data from local to hdfs
+
+load data local inpath '/root/Desktop/movie_dataset/movie' into table movie;
+
+If Loading data from hdfs to hive (hdfs)
+
+load data inpath '/user/root/movie' into table movie;
+
+Regular Queries:
+
+select * from movie limit 5;
+select name from movie limit 5;
+
+===============================================
+
+Create Table MovieGenre
+
+create table moviegenre (mid int,gid int) row format delimited fields terminated by '\t';
+
+Loading data via put commands
+
+hadoop fs -put /root/Desktop/movie_dataset/moviegenre /user/hive/warehouse/moviegenre/
+
+LOAD DATA INPATH '/user/training/moviegenre' into table moviegenre;
+                      --HDFS LOCATION                  --internal table
+
+LOAD DATA LOCAL INPATH '/root/Desktop/movie_dataset/moviegenre' INTO TABLE moviegenre;
+                            --LOCAL LINUX LOCATION                        --internal_table
+==================================================
+Creating Genre Table:
+
+create table genre (id int, name string) row format delimited fields terminated by '\t';
+hadoop fs -put /root/Desktop/movie_dataset/genre
+load data local inpath '/root/Desktop/movie_dataset/genre' into table genre;
+
+
+REGULAR HIVE QUERIER FOR THE MOVIE DATASET
+
+Which movie is released in which year ?
+FROM movie SELECT name,  year DISTRIBUTE BY year SORT BY year ASC;
+
+
+How many movies per year ?
+From movie select year, count(name) GROUP BY year SORT BY year ASC;
+
+
+To find which movie is of which genre ?
+select m.name, g.name from movie m join moviegenre mg on (m.id = mg.mid) join genre g on(g.id = mg.gid);
+
+=
+
+Q) how many movies release per year
+
+Q) Which movie released in which year and of which genre and is of what rating ?
+
+
+=============================================================================================================================================
+
+
+Partitioning
+
+Rules Of Partitioning
+1. the source table has to be in HIVE
+
+Static Partioning: 
+Dynamic Partitioning.
+
+create table movie_part (id int, name string) PARTITIONED BY (year int) row format delimited fields terminated by '\t';
+
+SET hive.exec.max.dynamic.partitions=1000000000;
+SET hive.exec.max.dynamic.partitions.pernode=1000000000;
+set hive.exec.dynamic.partition.mode=nonstrict;
+set hive.exec.dynamic.partition=true;
+
+INSERT OVERWRITE TABLE movie_part PARTITION (year) Select * from movie ;
+
+======
+
+Bucketing:
+
+Bucketing is helpful for 2 reasons
+•Enables more efficient queries
+•Makes sampling more efficient
+•Hash(column) MOD(number of buckets) –evenly distributed
+
+Code:
+CREATE TABLE students_bucket(name STRING,id INT,college STRING) PARTITIONED BY(country STRING) CLUSTERED BY (college) INTO 4 BUCKETS ROW FORMAT DELIMITED FIELDS TERMINATED BY ‘\t’ ;
+
+set hive.enforce.bucketing=true;
+
+INSERTING
+INSERT OVERWRITE TABLE employees_bucket PARTITION(country=‘USA’) SELECT name,id,college from college.students_external;
+
+SAMPLING
+SELECT * FROM students_bucket TABLESAMPLE(BUCKET 2 OUT OF 4) where country = "USA";
+
+===========
+
+==================    
+
+create table movie_bucket (mid int, mname string, year int) clustered by (year) into 5 buckets row format delimited fields terminated by '\t';
+
+
+create table movie (mid int, mname string, year int) row format delimited fields terminated by '\t';
+
+load data local inpath '/root/Desktop/hive/movie_dataset_hive/movie/movie' into table movie; 
+
+set hive.enforce.bucketing=true;
+set map.reduce.tasks = 5;
+
+insert overwrite table movie_bucket select * from movie;
+
+select year, count(*) from movie group by year;
+
+select month, 
+
+select year, count(*) from movie_bucket group by year;
+
+select year, count(*) from movie_part group by year;
+
+select count(*) from movie_bucket tablesample(bucket 2 out of 3 on year);

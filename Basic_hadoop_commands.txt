@@ -1,0 +1,148 @@
+
+
+hdfs is a superuser in hadoop which can change a file sytem permisson in hadoop
+
+
+
+
+1. To view all directories in a location '/' in hdfs
+
+hadoop fs -ls /
+
+2. To create a dir named 'input' in  '/'
+
+hadoop fs -mkdir /input
+
+3. To view all directories in a particular location '/input' in HDFS.
+
+hadoop fs -ls /input
+
+
+4. To load files in HDFS dir /input
+
+#create a sourcefile with the name sourcefile.txt in you linux.
+
+hadoop fs -put sourcefile.txt /input
+
+5. To view all directories in a default location /user/username/
+
+hadoop fs -ls
+#this command wont work for you as this is lookingup in the default login directory , in your case '/user/root'
+# So to get this working you need to create a directory for root under /user/
+
+hadoop fs -mkdir /user/root
+
+hadoop fs -ls
+
+6. To load files in HDFS default dir  '/user/username'
+
+hadoop fs -put sourcefile.txt 
+
+7. TO read files from the HDFS dir
+
+hadoop fs -cat /input/sourcefile.txt
+
+8. To Delete the directories or files in HDFS.
+
+hadoop fs -rm -r /input/sourcefile.txt
+
+9. To move files within hdfs
+
+hadoop fs -mv /source_hdfs_dir /destination_hdfs_dir
+
+10. To copy files within hdfs
+
+hadoop fs -cp /source_hdfs_dir /destination_hdfs_dir
+
+
+10.1.1  To change mode of files on HDFS
+
+7
+4 = read
+2 = write
+1 = execute
+
+777 { 7 for user; 7 
+
+
+hadoop fs -chmod 777 /filename.xt
+
+
+10.1.2
+ To change perms of a file in HDFS
+
+hadoop fs -chmod 
+
+11. To view all files in the cluster
+
+hadoop fs -ls -R /
+
+12. To check the health of the Hadoop Cluster
+
+hdfs fsck /
+
+(hadoop fsck / is also there but deprecated*)
+
+13. Now check the replication factor
+
+hdfs fsck / -files -blocks -racks
+
+14. To find out live nodes and dead nodes.	
+
+hdfs dfsadmin -report  
+
+=====
+
+15. Benchmarking the cluster
+
+Write Throughput
+
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/hadoop-test.jar TestDFSIO -write -nrFiles 10 -fileSize 10 
+
+=====
+
+16. Read Throughput
+
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/hadoop-test.jar TestDFSIO -read -nrFiles 10 -fileSize 10
+
+=====
+
+TeraGen - HDD & Network Performance - 50MB/s
+
+1TB Data generation : teragen - network performance : 
+
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/hadoop-examples.jar teragen -D mapreduce.job.maps=20 -D dfs.blocksize=67108864 100000000 /user/root/input_dir
+
+hadooop jar examples.jar teragen records_count /result
+
+hadoop jar $HADOOP_HOME/lib/examples.jar teragen 10000000000 /user/root/input_dir
+
+locate examples.jar
+
+1record = 100bytes
+
+1 terabyte = 1 000 000 000 000 bytes
+
+1000000000000 bytes / 100 = 10000000000 records
+
+=========
+
+TeraSort - CPU performance :
+
+
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/hadoop-examples.jar terasort -D mapreduce.job.reducers=20 /user/root/input_dir tera/out
+
+hadooop jar examples.jar teragen records_count /result
+
+hadooop jar examples.jar teragen 10000000000 /result
+
+
+=================
+
+
+
+we developed a cluster with 5 DN's of 40TB each with 4TB/disk as 10 disks per DN which had a write speed of 50MB/sec 
+
+
+Generatin Time for 1TB = 15 mins
+Sort Time for 1TB data was : 1hr and 15 mins
