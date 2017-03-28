@@ -1,0 +1,4 @@
+A = LOAD '/root/Desktop/pig/student_data.txt' USING PigStorage();
+B = FILTER A BY ($1 matches 'ratan');
+DUMP B;
+STORE B INTO '/root/Desktop/pig/b';

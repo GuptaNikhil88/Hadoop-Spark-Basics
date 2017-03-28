@@ -1,0 +1,6 @@
+A = LOAD '/pig_data/student_data.txt' AS (student_id:int, student_name:chararray, age:int, gpa:float);
+B = LOAD '/pig_data/voter_data.txt' AS (party_id:int, voter_id:int, party_name:chararray, contributions:float);
+C = JOIN A BY student_id LEFT OUTER, B BY voter_id;
+DUMP C;
+F = FOREACH C GENERATE student_id, student_name, party_name;
+DUMP F;

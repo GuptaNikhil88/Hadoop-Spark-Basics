@@ -1,0 +1,4 @@
+A = LOAD '/root/Desktop/pig/joins/dataset/student_data.txt' USING PigStorage() AS (name:chararray, age:int, gpa:float); 
+B = FILTER A BY ($0 matches 'ratan');
+DUMP B;
+STORE B INTO '/root/Desktop/b';

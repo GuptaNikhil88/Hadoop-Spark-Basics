@@ -1,0 +1,4 @@
+A = LOAD 'student_data' AS (sno: int, name: chararray, age: int, gpa: float);
+B = GROUP A BY name;
+C = FOREACH B GENERATE group, COUNT(A);
+DUMP C;

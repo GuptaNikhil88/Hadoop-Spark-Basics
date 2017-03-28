@@ -1,0 +1,14 @@
+1	2	BJP	12.5
+2	4	BJP	13.5	
+3	6	Congress	12.2
+4	9	TMK	4.3
+5	11	BJP	15.5
+6	13	RJD	5.5
+7	12	BJP	16.7
+8	3	TCP	2.4
+9	14	Congress	10.2
+10	11	Congress	13.4
+11		JMD	10.2
+12		UMP	2.1
+13		EMD	1.1
+14		OTHERS	0.3
